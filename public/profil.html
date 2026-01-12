@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Compte - CINPT</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Force display block here since we are on a dedicated page */
+        .profile-section {
+            display: block !important;
+            padding-top: 50px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER SIMPLIFIÉ -->
+    <header class="site-header">
+        <nav class="navbar">
+            <a href="index.html" class="logo">
+                <img src="assets/img/logo.png" alt="CINPT Logo" class="logo-img">
+            </a>
+            <div class="nav-links" style="margin-left: auto;">
+                <!-- On peut ajouter des liens ou laisser vide si on veut juste le retour -->
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- SECTION PROFIL -->
+        <section id="user-dashboard" class="profile-section">
+            <div class="container">
+                <div class="profile-header">
+                    <h1 class="page-title">MON ESPACE CLIENT</h1>
+                    <a href="index.html" class="btn-neon-sm" id="btn-back-home-link">
+                        <i class="fas fa-arrow-left"></i> Retour à l'accueil
+                    </a>
+                </div>
+
+                <div class="dashboard-wrapper">
+                    <!-- SIDEBAR -->
+                    <aside class="dashboard-sidebar">
+                        <div class="user-brief">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h3 id="user-name-display">Utilisateur</h3>
+                            <p>Membre CINPT</p>
+                        </div>
+
+                        <nav class="side-nav">
+                            <button class="nav-btn active" data-target="infos">
+                                <i class="fas fa-id-card"></i> Mes Infos
+                            </button>
+                            <button class="nav-btn" data-target="password">
+                                <i class="fas fa-lock"></i> Mot de Passe
+                            </button>
+                            <button class="nav-btn" data-target="tickets">
+                                <i class="fas fa-ticket-alt"></i> Mes Billets
+                            </button>
+                            <button class="nav-btn" data-target="contact">
+                                <i class="fas fa-envelope"></i> Support
+                            </button>
+                            <button class="nav-btn logout-btn" id="btn-logout-sidebar">
+                                <i class="fas fa-sign-out-alt"></i> Déconnexion
+                            </button>
+                        </nav>
+                    </aside>
+
+                    <!-- CONTENU PRINCIPAL -->
+                    <div class="dashboard-content">
+
+                        <!-- SECTION: MES INFORMATIONS -->
+                        <div id="infos" class="content-section active">
+                            <h2 class="section-heading">Mes Informations Personnelles</h2>
+                            <form id="profile-form" class="profile-form">
+                                <div class="form-row">
+                                    <div class="input-group">
+                                        <label>Email <span class="text-muted">(Non modifiable)</span></label>
+                                        <input type="email" id="profile-email" class="neon-input" readonly>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="input-group">
+                                        <label>Nom Complet <span class="required">*</span></label>
+                                        <input type="text" id="profile-nom" class="neon-input" required
+                                            placeholder="John Doe">
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Âge <span class="required">*</span></label>
+                                        <input type="number" id="profile-age" class="neon-input" required
+                                            placeholder="25" min="1" max="120">
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="input-group">
+                                        <label>Téléphone</label>
+                                        <input type="tel" id="profile-telephone" class="neon-input"
+                                            placeholder="+212 6XX XXX XXX">
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="btn-neon">
+                                    <i class="fas fa-save"></i> SAUVEGARDER LES MODIFICATIONS
+                                </button>
+                            </form>
+
+                            <div class="danger-zone">
+                                <h3>Zone Dangereuse</h3>
+                                <p>La suppression de votre compte est définitive et irréversible.</p>
+                                <button id="btn-delete-account" class="btn-danger">
+                                    <i class="fas fa-trash-alt"></i> Supprimer mon compte
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- SECTION: MOT DE PASSE -->
+                        <div id="password" class="content-section">
+                            <h2 class="section-heading">Changer le Mot de Passe</h2>
+                            <form id="password-form" class="profile-form">
+                                <div class="input-group">
+                                    <label>Mot de Passe Actuel <span class="required">*</span></label>
+                                    <input type="password" id="old-password" class="neon-input" required
+                                        placeholder="••••••••">
+                                </div>
+
+                                <div class="input-group">
+                                    <label>Nouveau Mot de Passe <span class="required">*</span></label>
+                                    <input type="password" id="new-password" class="neon-input" required
+                                        placeholder="••••••••" minlength="6">
+                                    <small class="help-text">Au moins 6 caractères</small>
+                                </div>
+
+                                <div class="input-group">
+                                    <label>Confirmer le Nouveau Mot de Passe <span class="required">*</span></label>
+                                    <input type="password" id="confirm-password" class="neon-input" required
+                                        placeholder="••••••••" minlength="6">
+                                </div>
+
+                                <button type="submit" class="btn-neon">
+                                    <i class="fas fa-key"></i> CHANGER LE MOT DE PASSE
+                                </button>
+                            </form>
+                        </div>
+
+                        <!-- SECTION: MES BILLETS -->
+                        <div id="tickets" class="content-section">
+                            <h2 class="section-heading">Mes Réservations</h2>
+                            <div id="reservations-list">
+                                <p style="color: #aaa; text-align: center; padding: 40px 0;">
+                                    <i class="fas fa-ticket-alt"
+                                        style="font-size: 3rem; opacity: 0.3; display: block; margin-bottom: 15px;"></i>
+                                    Vous n'avez pas encore de réservation
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- SECTION: SUPPORT -->
+                        <div id="contact" class="content-section">
+                            <h2 class="section-heading">Support Client</h2>
+                            <form class="contact-form" onsubmit="event.preventDefault(); alert('Message envoyé !');">
+                                <div class="input-group">
+                                    <label>Sujet</label>
+                                    <select class="neon-input">
+                                        <option>Problème de réservation</option>
+                                        <option>Problème de paiement</option>
+                                        <option>Suggestion</option>
+                                        <option>Autre</option>
+                                    </select>
+                                </div>
+
+                                <div class="input-group">
+                                    <label>Message</label>
+                                    <textarea rows="6" class="neon-input"
+                                        placeholder="Décrivez votre problème ou suggestion..." required></textarea>
+                                </div>
+
+                                <button type="submit" class="btn-neon">
+                                    <i class="fas fa-paper-plane"></i> ENVOYER
+                                </button>
+                            </form>
+
+                            <div class="contact-info"
+                                style="margin-top: 30px; padding: 20px; background: rgba(0,0,0,0.3); border-radius: 8px;">
+                                <h3 style="margin-bottom: 15px;">Autres Moyens de Contact</h3>
+                                <p><i class="fas fa-phone"></i> Téléphone : +212 5XX XXX XXX</p>
+                                <p><i class="fas fa-envelope"></i> Email : support@cinpt.ma</p>
+                                <p><i class="fas fa-clock"></i> Horaires : Lun-Sam 9h-18h</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

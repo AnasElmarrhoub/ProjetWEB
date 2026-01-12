@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - CineINPT</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        /* Admin specific styles */
+        .admin-container {
+            padding: 100px 20px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+            padding-bottom: 10px;
+        }
+
+        .admin-tab {
+            cursor: pointer;
+            padding: 10px 20px;
+            color: var(--text-gray);
+            transition: all 0.3s;
+            border-radius: 5px;
+        }
+
+        .admin-tab.active {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--accent-cyan);
+            border: 1px solid var(--accent-cyan);
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+        }
+
+        .admin-section {
+            display: none;
+        }
+
+        .admin-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: rgba(10, 26, 58, 0.6);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .data-table th,
+        .data-table td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .data-table th {
+            background: rgba(0, 229, 255, 0.1);
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+            font-size: 0.9rem;
+        }
+
+        .data-table tr:hover {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .action-btn {
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            font-weight: bold;
+            margin-right: 5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+        }
+
+        .btn-edit {
+            background: rgba(243, 156, 18, 0.1);
+            color: #f39c12;
+            border-color: #f39c12;
+        }
+
+        .btn-edit:hover {
+            background: #f39c12;
+            color: white;
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .btn-delete {
+            background: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border-color: #e74c3c;
+        }
+
+        .btn-delete:hover {
+            background: #e74c3c;
+            color: white;
+            box-shadow: 0 0 15px rgba(231, 76, 60, 0.4);
+        }
+
+        .form-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            backdrop-filter: blur(5px);
+        }
+
+        .form-content {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 15px;
+            width: 500px;
+            max-width: 90%;
+            border: 1px solid var(--accent-cyan);
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.2);
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-gray);
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 5px;
+            font-family: var(--font-main);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--accent-cyan);
+            outline: none;
+            box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+        }
+
+        .close-form {
+            float: right;
+            cursor: pointer;
+            font-size: 24px;
+            color: var(--text-gray);
+            transition: color 0.3s;
+        }
+
+        .close-form:hover {
+            color: var(--accent-cyan);
+        }
+
+        .glass-effect {
+            background: rgba(10, 26, 58, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- NAV -->
+    <nav class="navbar glass-effect">
+        <img src="assets/img/logo.png" alt="CineINPT Admin" class="logo-img" style="height: 50px;">
+        <div class="nav-links">
+            <a href="index.html" class="nav-item">Retour au Site</a>
+            <a href="#" id="btn-logout-admin" class="nav-item">Déconnexion</a>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <div class="admin-header">
+            <h1>Tableau de Bord Administrateur</h1>
+            <div id="admin-info">Connecté en tant que Admin</div>
+        </div>
+
+        <div class="admin-tabs">
+            <div class="admin-tab active" data-target="films-section">Gestion Films</div>
+            <div class="admin-tab" data-target="salles-section">Gestion Salles</div>
+            <div class="admin-tab" data-target="reservations-section">Réservations</div>
+        </div>
+
+        <!-- FILMS SECTION -->
+        <div id="films-section" class="admin-section active">
+            <button class="btn-neon" onclick="openFilmForm()">+ Ajouter un Film</button>
+            <br><br>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Titre</th>
+                        <th>Genre</th>
+                        <th>Durée</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="films-table-body">
+                    <!-- JS will populate this -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- SALLES SECTION -->
+        <div id="salles-section" class="admin-section">
+            <button class="btn-neon" onclick="openSalleForm()">+ Ajouter une Salle</button>
+            <br><br>
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Capacité</th>
+                        <th>Type</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="salles-table-body">
+                    <!-- JS will populate this -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- RESERVATIONS SECTION -->
+        <div id="reservations-section" class="admin-section">
+            <table class="data-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Client</th>
+                        <th>Film</th>
+                        <th>Date</th>
+                        <th>Prix</th>
+                    </tr>
+                </thead>
+                <tbody id="reservations-table-body">
+                    <!-- JS will populate this -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- MODAL FILM -->
+    <div id="film-modal" class="form-modal">
+        <div class="form-content">
+            <span class="close-form" onclick="closeFilmForm()">&times;</span>
+            <h2 id="film-modal-title">Ajouter un Film</h2>
+            <form id="film-form">
+                <input type="hidden" id="film-id">
+                <div class="form-group">
+                    <label>Titre</label>
+                    <input type="text" id="film-titre" required>
+                </div>
+                <div class="form-group">
+                    <label>Genre</label>
+                    <input type="text" id="film-genre">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="film-desc" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Durée (min)</label>
+                    <input type="number" id="film-duree" required>
+                </div>
+                <div class="form-group">
+                    <label>URL Affiche</label>
+                    <input type="text" id="film-affiche">
+                </div>
+                <button type="submit" class="btn-neon">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL SALLE -->
+    <div id="salle-modal" class="form-modal">
+        <div class="form-content">
+            <span class="close-form" onclick="closeSalleForm()">&times;</span>
+            <h2 id="salle-modal-title">Ajouter une Salle</h2>
+            <form id="salle-form">
+                <input type="hidden" id="salle-id">
+                <div class="form-group">
+                    <label>Nom de la salle</label>
+                    <input type="text" id="salle-nom" required>
+                </div>
+                <div class="form-group">
+                    <label>Capacité</label>
+                    <input type="number" id="salle-capacite" required>
+                </div>
+                <div class="form-group">
+                    <label>Type Ecran</label>
+                    <select id="salle-type">
+                        <option value="Standard">Standard</option>
+                        <option value="IMAX">IMAX</option>
+                        <option value="3D">3D</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-neon">Enregistrer</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+
+</html>
